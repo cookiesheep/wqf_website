@@ -3,17 +3,17 @@ export * from './education'
 export * from './career'
 
 // personal info
-export const name = 'Derek Hu'
-export const headline = 'Teacher at Shanghai Soong Ching Ling School.'
+export const name = 'Qifan Wu'
+export const headline = 'School of Computer, Sun Yat-sen University.'
 export const introduction =
-  "Coucou Les Amis! My name is Derek Hu. I'm from Hubei and an alumnus of BUPT, UChicago, and Tsinghua. I’ve been teaching Computer Science at SCLS since 2020."
-export const email = 'tong.hu@scls-sh.org'
-export const githubUsername = 'derekhut'
+  "Hi everyone! My name is Qifan Wu. I'm from ShenZhen and an undergraduate of Sun Yat-sen University. I’ve been studying Computer Science at SYSU since 2023."
+export const email = 'wuqf9@mail2.sysu.edu.cn'
+export const githubUsername = 'cookiesheep'
 
 // about page
 export const aboutMeHeadline = 'Who Are You and Why Should I Care?'
 export const aboutParagraphs = [
-  "Coucou Les Amis! My name is Derek Hu. I'm from Hubei and an alumnus of BUPT, UChicago, and Tsinghua. I’ve been teaching Computer Science at SCLS since 2020.",
+  "Hi everyone! My name is Qifan Wu. I'm from ShenZhen and an undergraduate of Sun Yat-sen University. I’ve been studying Computer Science at SYSU since 2023.",
   'Currently I am working on a new course called AI Camp, an innovative course where high school students create real-world products and startups while exploring the frontiers of AI.',
   "I started this blog to share the insights I learn every day. Most blogs focus on education in Artificial Intelligence and general computer science, while others share the life lessons I've learned.",
 ]
@@ -25,7 +25,7 @@ export const blogIntro =
 
 // social links
 export type SocialLinkType = {
-  name: string
+  name: Qifan_Wu
   ariaLabel?: string
   icon: string
   href: string
