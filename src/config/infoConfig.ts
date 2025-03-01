@@ -25,7 +25,7 @@ export const blogIntro =
 
 // social links
 export type SocialLinkType = {
-  name: Qifan_Wu
+  name: string
   ariaLabel?: string
   icon: string
   href: string
