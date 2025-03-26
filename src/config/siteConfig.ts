@@ -1,5 +1,8 @@
 // site config
-export const utm_source = 'derek-portfolio'
+export const utm_source = 'wuqifan-portfolio'
+export const siteName = 'Wuqi Fan'
+export const siteDescription = 'A personal website built with Next.js, TailwindCSS, and DaisyUI'
+export const siteUrl = 'https://wuqifan.top'
 
 
 // navigation config

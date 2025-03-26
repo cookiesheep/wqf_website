@@ -9,32 +9,33 @@ export type CareerItemType = {
   }
   
 export const careerList: Array<CareerItemType> = [
+    // {
+    //   company: 'Sun Yat-sen University',
+    //   title: 'Computer Science Student',
+    //   logo: 'college',
+    //   start: '2023',
+    //   end: 'Present'
+    // },
     {
-      company: 'Shanghai Soong Ching Ling School',
-      title: 'Computer Science Teacher',
-      logo: 'college',
-      start: '2020',
+      company: 'China National Supercomputing Center Guangzhou,Yang lab',
+      title: 'Research Assistant',
+      logo: 'education institution',
+      start: '2024',
       end: 'Present'
     },
     {
-      company: 'Bigo Live',
-      title: 'US Operations',
-      logo: 'coffee',
-      start: '2018',
-      end: '2020'
+      company: 'Sesame programming company',
+      title: 'Teacher of C++',
+      logo: 'company',
+      start: '2024',
+      end: '2024'
     },
-    {
-      company: 'Sinovation Ventures',
-      title: 'Investment Analyst',
-      logo: 'bank',
-      start: '2017',
-      end: '2018'
-    },
-    {
-      company: 'Expedia',
-      title: 'Software Engineer',
-      logo: 'coffee',
-      start: '2015',
-      end: '2017'
-    }
+
+    // {
+    //   company: 'Expedia',
+    //   title: 'Software Engineer',
+    //   logo: 'coffee',
+    //   start: '2015',
+    //   end: '2017'
+    // }
   ]
