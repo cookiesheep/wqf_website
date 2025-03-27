@@ -10,6 +10,11 @@ import {
   SimpleIcon,
 } from "react-icon-cloud";
 
+// 检测是否在Vercel环境
+const isVercelProduction = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' 
+  || process.env.VERCEL_ENV === 'production'
+  || typeof window !== 'undefined' && window.location.hostname.includes('vercel.app');
+
 export const cloudProps: Omit<ICloud, "children"> = {
   containerProps: {
     style: {
@@ -33,28 +38,12 @@ export const cloudProps: Omit<ICloud, "children"> = {
     outlineColour: "#0000",
     maxSpeed: 0.04,
     minSpeed: 0.02,
-    // dragControl: false,
+    freezeActive: false,
+    shuffleTags: true,
+    textColour: "",
+    noSelect: true,
+    imageMode: "both",
   },
-};
-
-export const renderCustomIcon = (icon: SimpleIcon, theme: string) => {
-  const bgHex = theme === "light" ? "#f3f2ef" : "#080510";
-  const fallbackHex = theme === "light" ? "#6e6e73" : "#ffffff";
-  const minContrastRatio = theme === "dark" ? 2 : 1.2;
-
-  return renderSimpleIcon({
-    icon,
-    bgHex,
-    fallbackHex,
-    minContrastRatio,
-    size: 42,
-    aProps: {
-      href: undefined,
-      target: undefined,
-      rel: undefined,
-      onClick: (e: any) => e.preventDefault(),
-    },
-  });
 };
 
 export type DynamicCloudProps = {
@@ -65,22 +54,91 @@ type IconData = Awaited<ReturnType<typeof fetchSimpleIcons>>;
 
 export default function IconCloud({ iconSlugs }: DynamicCloudProps) {
   const [data, setData] = useState<IconData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const { theme } = useTheme();
 
+  // 在客户端获取图标数据
   useEffect(() => {
-    fetchSimpleIcons({ slugs: iconSlugs }).then(setData);
+    if (typeof window === 'undefined') return; // 服务器端不执行
+    
+    setIsLoading(true);
+    setError(null);
+    
+    fetchSimpleIcons({ slugs: iconSlugs })
+      .then((result) => {
+        setData(result);
+        console.log("Icons loaded successfully:", Object.keys(result.simpleIcons).length);
+      })
+      .catch((error) => {
+        console.error("Error loading icons:", error);
+        setError("Failed to load icons");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [iconSlugs]);
 
+  // 直接使用renderSimpleIcon，但强制设置颜色
   const renderedIcons = useMemo(() => {
-    if (!data) return null;
+    if (!data || typeof window === 'undefined') return null;
 
-    return Object.values(data.simpleIcons).map((icon) =>
-      renderCustomIcon(icon, theme || "light"),
-    );
+    // 确保每个图标都有颜色
+    return Object.values(data.simpleIcons).map((icon) => {
+      // 检查图标颜色并记录
+      console.log(`Icon ${icon.title}: hex=${icon.hex}`);
+      
+      // 在Vercel环境下需要特殊处理
+      if (isVercelProduction) {
+        // 不设置任何背景色和对比度参数
+        return renderSimpleIcon({
+          icon,
+          size: 42,
+          // 通过aProps直接设置图标颜色
+          aProps: {
+            href: '#',
+            onClick: (e) => e.preventDefault(),
+            style: {
+              color: `#${icon.hex}`,
+              fill: `#${icon.hex}`,
+            },
+          },
+        });
+      }
+      
+      // 本地环境，使用正常渲染
+      return renderSimpleIcon({
+        icon,
+        size: 42,
+        // 为本地环境设置一个更适合的背景色
+        bgHex: theme === 'dark' ? '#1e1e20' : '#ffffff',
+        fallbackHex: '#888888',
+        aProps: {
+          href: '#',
+          onClick: (e) => e.preventDefault(),
+        },
+      });
+    });
   }, [data, theme]);
 
+  if (isLoading) {
+    return <div className="animate-pulse h-full w-full bg-muted/20 rounded-lg flex items-center justify-center">Loading icons...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500">Error: {error}</div>;
+  }
+
+  if (!renderedIcons) {
+    return <div>No icons available</div>;
+  }
+
+  // 在渲染前记录环境信息
+  console.log("Environment:", isVercelProduction ? "Vercel Production" : "Local/Development");
+  console.log("Theme:", theme);
+
   return (
-    // @ts-ignore
+    // @ts-ignore - Cloud组件类型可能与React 18不完全兼容
     <Cloud {...cloudProps}>
       <>{renderedIcons}</>
     </Cloud>

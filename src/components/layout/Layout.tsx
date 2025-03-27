@@ -1,5 +1,16 @@
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
+import dynamic from 'next/dynamic'
+
+// 动态导入SpringMascot组件，不进行SSR，避免服务器端渲染错误
+// 添加loading属性为null，确保完全客户端渲染
+const SpringMascot = dynamic(
+  () => import('@/components/ui/SpringMascot'),
+  { 
+    ssr: false,
+    loading: () => null
+  }
+)
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -14,6 +25,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <main className="flex-auto">{children}</main>
         <Footer />
       </div>
+      
+      {/* 添加小熊弹簧挂件 - 使用客户端组件 */}
+      <SpringMascot />
     </>
   )
 }
